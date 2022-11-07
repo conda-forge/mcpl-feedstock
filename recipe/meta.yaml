@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://github.com/mctools/mcpl/archive/v{{ version }}.tar.gz
-  sha256: ded8da682fda348b8ceb435db0eb0923c03f2410e069932ee2fb146ea34bf47a
+  sha256: 5674f935de19c56e5739f3ec9ac80a0a3c576cd42657fefea8efdb596fece3ca
   #NB get sha256 with: curl -sL <URL> | openssl sha256
   fn: mcpl-src.tar.gz
   folder: src
