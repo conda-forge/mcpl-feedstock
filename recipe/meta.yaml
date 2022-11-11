@@ -1,4 +1,4 @@
-{% set version = "1.5.1" %}
+{% set version = "1.6.0" %}
 
 package:
   name: mcpl
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://github.com/mctools/mcpl/archive/v{{ version }}.tar.gz
-  sha256: 5674f935de19c56e5739f3ec9ac80a0a3c576cd42657fefea8efdb596fece3ca
+  sha256: 38b02058a363d2dff661871b0c5f41d4f5e42d6421513fd8276da7a0bf18ebeb
   #NB get sha256 with: curl -sL <URL> | openssl sha256
   fn: mcpl-src.tar.gz
   folder: src
@@ -22,7 +22,6 @@ requirements:
     - make  # [not win]
     - zlib
     - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
   host:
     - python
     - pip
