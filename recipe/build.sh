@@ -5,22 +5,23 @@ set -e
 mkdir -p build
 cd build
 
-#Config (INSTALL_PY=OFF since we handle mcpl/pymcpltool installation via pip below).
+#Config (MCPL_ENABLE_PYTHON=OFF since we handle mcpl/pymcpltool installation via pip below).
 cmake \
     -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
     "${SRC_DIR}/src" \
     -DBUILD_SHARED_LIBS=ON \
+    -DMCPL_DISABLE_CXX=ON \
     -DMCPL_NOTOUCH_CMAKE_BUILD_TYPE=ON \
-    -DMODIFY_RPATH=OFF \
+    -DMCPL_ENABLE_RPATHMOD=OFF \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_EXAMPLES=OFF \
-    -DINSTALL_PY=OFF \
+    -DMCPL_ENABLE_EXAMPLES=OFF \
+    -DMCPL_ENABLE_PYTHON=OFF \
+    -DMCPL_ENABLE_ZLIB=USEPREINSTALLED \
+    -DCMAKE_BUILD_PARALLEL_LEVEL=${CPU_COUNT:-1} \
     -DPython3_EXECUTABLE="$PYTHON" \
     ${CMAKE_ARGS}
-
-make -j${CPU_COUNT:-1}
-make install
+cmake --build . --target install --config Release
 
 #Note: There is no "make test" or "make ctest" functionality for MCPL
 #      yet. If it appears in the future, we should add it here.
