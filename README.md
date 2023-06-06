@@ -1,11 +1,11 @@
-About mcpl
-==========
+About mcpl-feedstock
+====================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/mcpl-feedstock/blob/main/LICENSE.txt)
 
 Home: https://github.com/mctools/mcpl
 
 Package license: CC0-1.0
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/mcpl-feedstock/blob/main/LICENSE.txt)
 
 Summary: MCPL - Monte Carlo Particle Lists
 
