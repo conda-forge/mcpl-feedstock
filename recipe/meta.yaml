@@ -1,56 +1,140 @@
-{% set version = "1.6.2" %}
+{% set version = "1.9.80" %}
 
 package:
   name: mcpl
   version: {{ version }}
 
 source:
-  url: https://github.com/mctools/mcpl/archive/v{{ version }}.tar.gz
-  sha256: 02ec79505ae57a8850ce11734e36f4fb451823e599c679d26d2f200500ca51b2
+  #FIXME url: https://github.com/mctools/mcpl/archive/v{{ version }}.tar.gz
+  #FIXME sha256: 02ec79505ae57a8850ce11734e36f4fb451823e599c679d26d2f200500ca51b2
+  url: https://github.com/mctools/mcpl/archive/d63dcea3883ff1c58cc722364e850e41aaf903a9.tar.gz
+  sha256: 1e91648c05753510a3571633f133a3ed89881f095bfb0d971b30b12027eeebe3
   #NB get sha256 with: curl -sL <URL> | openssl sha256
   fn: mcpl-src.tar.gz
   folder: src
 
 build:
-  number: 6
-  skip: true  # [win]
-  skip: true  # [py<38]
+  noarch: python
+  number: 0
 
-requirements:
-  build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - cmake
-    - make  # [not win]
-    - zlib
-    - {{ compiler('c') }}
-    - {{ stdlib('c') }}
-  host:
-    - python
-    - pip
-    - setuptools
-    - zlib
-  run:
-    - python
-    - numpy
-    - zlib
+outputs:
+  - name: mcpl-lib
+    script: build_core.sh  # [unix]
+    script: build_core.bat  # [win]
+    build:
+    requirements:
+      build:
+        - cmake >=3.25
+        - make  # [not win]
+        - {{ compiler('c') }}
+        - {{ stdlib("c") }}
+        - zlib
+      host:
+        - zlib
+      run:
+        - zlib
+    test:
+      requires:
+        - cmake >=3.25
+        - make  # [not win]
+        - c-compiler
+      source_files:
+        - ./src/examples/downstream_cmake
+        - ./src/examples/example.mcpl
+      script: test_core.sh  # [unix]
+      script: test_core.bat  # [win]
 
-test:
-  requires:
-    - cmake
-  imports:
-    - mcpl
-  commands:
-    - mcpl-config --help
-    - mcpl-config -s
-    - mcpltool --version
-    - mcpltool --help
-    - ssw2mcpl --help
-    - mcpl2ssw --help
-    - phits2mcpl --help
-    - mcpl2phits --help
-    - pymcpltool --help
-    - cmake --find-package -DNAME=MCPL -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
+  - name: mcpl-core
+    build:
+      noarch: python
+      script: python -m pip install "./src/mcpl_core/empty_pypkg" -vv --no-deps --no-build-isolation
+    requirements:
+      build:
+        - python  {{ python_min }}  # [build_platform != target_platform]
+        - cross-python_{{ target_platform }}  # [build_platform != target_platform]
+      host:
+        - python  {{ python_min }}
+        - pip
+        - setuptools >=75.3.2
+      run:
+        - python >={{ python_min }}
+        - mcpl-lib ={{ version }}
+    test:
+      requires:
+        - python {{ python_min }}
+        - pip
+      commands:
+        - pip check
+        - pip show mcpl-core
+        - conda list
+
+  - name: mcpl-python
+    build:
+      noarch: python
+      script: python -m pip install "./src/mcpl_python" -vv --no-deps --no-build-isolation
+      entry_points:
+        - pymcpltool = mcpl.mcpl:main
+    requirements:
+      build:
+        - python  {{ python_min }}  # [build_platform != target_platform]
+        - cross-python_{{ target_platform }}  # [build_platform != target_platform]
+      host:
+        - python  {{ python_min }}
+        - pip
+        - setuptools >=64.0
+      run:
+        - python >={{ python_min }}
+        - numpy >=1.22
+    test:
+      imports:
+        - mcpl
+      requires:
+        - python {{ python_min }}
+        - pip
+      commands:
+        - pip check
+        - pip show mcpl-python
+        - pymcpltool --help
+
+  - name: mcpl
+    build:
+      noarch: python
+      script: python -m pip install "./src/mcpl_metapkg" -vv --no-deps --no-build-isolation
+    requirements:
+      build:
+        - python  {{ python_min }}  # [build_platform != target_platform]
+        - cross-python_{{ target_platform }}  # [build_platform != target_platform]
+      host:
+        - python  {{ python_min }}
+        - pip
+        - setuptools >=75.3.2
+      run:
+        - python >={{ python_min }}
+        #Exact version pinning for consistent ncrystal environment:
+        - mcpl-core ={{ version }}
+        - mcpl-python ={{ version }}
+    test:
+      requires:
+        - python {{ python_min }}
+        - pip
+        - cmake >=3.25
+        - make  # [not win]
+        - c-compiler
+      imports:
+        - mcpl
+      commands:
+        - mcpl-config --help
+        - mcpl-config -s
+        - mcpltool --version
+        - mcpltool --help
+#        - ssw2mcpl --help
+#        - mcpl2ssw --help
+#        - phits2mcpl --help
+#        - mcpl2phits --help
+        - pymcpltool --help
+        - cmake --find-package -DNAME=MCPL -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
+
+  #FIXME: add mcpl-extra package ?
 
 about:
   home: https://github.com/mctools/mcpl
@@ -59,8 +143,8 @@ about:
     Utilities and API for accessing MCPL (.mcpl) files. MCPL is a binary
     format with lists of particle state information, for interchanging and
     reshooting events between various Monte Carlo simulation applications.
-  license: CC0-1.0
-  license_family: CC
+  license: Apache-2.0
+  license_family: Apache
   license_file: src/LICENSE
   doc_url: https://mctools.github.io/mcpl
   dev_url: https://github.com/mctools/mcpl
