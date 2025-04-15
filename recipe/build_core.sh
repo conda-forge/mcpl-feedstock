@@ -3,7 +3,7 @@ set -eux
 
 #NOTICE: Keep synchronized with build_core.bat
 
-test -f "${SRC_DIR}/src/mcpl_core/include/mcpl.h"
+test -f "${SRC_DIR}/src/mcpl_core/include/mcpl.h.in"
 
 cmake \
     -B ./build_core \
