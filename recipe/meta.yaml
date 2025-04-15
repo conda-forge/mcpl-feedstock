@@ -10,7 +10,6 @@ source:
   url: https://github.com/mctools/mcpl/archive/d63dcea3883ff1c58cc722364e850e41aaf903a9.tar.gz
   sha256: 1e91648c05753510a3571633f133a3ed89881f095bfb0d971b30b12027eeebe3
   #NB get sha256 with: curl -sL <URL> | openssl sha256
-  fn: mcpl-src.tar.gz
   folder: src
 
 build:
@@ -21,7 +20,6 @@ outputs:
   - name: mcpl-lib
     script: build_core.sh  # [unix]
     script: build_core.bat  # [win]
-    build:
     requirements:
       build:
         - cmake >=3.25
@@ -110,7 +108,6 @@ outputs:
         - setuptools >=75.3.2
       run:
         - python >={{ python_min }}
-        #Exact version pinning for consistent ncrystal environment:
         - mcpl-core ={{ version }}
         - mcpl-python ={{ version }}
     test:
@@ -127,14 +124,28 @@ outputs:
         - mcpl-config -s
         - mcpltool --version
         - mcpltool --help
-#        - ssw2mcpl --help
-#        - mcpl2ssw --help
-#        - phits2mcpl --help
-#        - mcpl2phits --help
         - pymcpltool --help
         - cmake --find-package -DNAME=MCPL -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
 
-  #FIXME: add mcpl-extra package ?
+  - name: mcpl-extra
+    script: build_extra.sh  # [unix]
+    script: build_extra.bat  # [win]
+    requirements:
+      build:
+        - cmake >=3.25
+        - make  # [not win]
+        - {{ compiler('c') }}
+        - {{ stdlib("c") }}
+      host:
+        - mcpl-lib ={{ version }}
+      run:
+        - mcpl-lib ={{ version }}
+    test:
+      commands:
+        - ssw2mcpl --help
+        - mcpl2ssw --help
+        - phits2mcpl --help
+        - mcpl2phits --help
 
 about:
   home: https://github.com/mctools/mcpl
