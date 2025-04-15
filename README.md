@@ -85,6 +85,7 @@ Current release info
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-mcpl-green.svg)](https://anaconda.org/conda-forge/mcpl) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/mcpl.svg)](https://anaconda.org/conda-forge/mcpl) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/mcpl.svg)](https://anaconda.org/conda-forge/mcpl) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/mcpl.svg)](https://anaconda.org/conda-forge/mcpl) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-mcpl--core-green.svg)](https://anaconda.org/conda-forge/mcpl-core) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/mcpl-core.svg)](https://anaconda.org/conda-forge/mcpl-core) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/mcpl-core.svg)](https://anaconda.org/conda-forge/mcpl-core) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/mcpl-core.svg)](https://anaconda.org/conda-forge/mcpl-core) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-mcpl--extra-green.svg)](https://anaconda.org/conda-forge/mcpl-extra) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/mcpl-extra.svg)](https://anaconda.org/conda-forge/mcpl-extra) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/mcpl-extra.svg)](https://anaconda.org/conda-forge/mcpl-extra) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/mcpl-extra.svg)](https://anaconda.org/conda-forge/mcpl-extra) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-mcpl--lib-green.svg)](https://anaconda.org/conda-forge/mcpl-lib) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/mcpl-lib.svg)](https://anaconda.org/conda-forge/mcpl-lib) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/mcpl-lib.svg)](https://anaconda.org/conda-forge/mcpl-lib) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/mcpl-lib.svg)](https://anaconda.org/conda-forge/mcpl-lib) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-mcpl--python-green.svg)](https://anaconda.org/conda-forge/mcpl-python) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/mcpl-python.svg)](https://anaconda.org/conda-forge/mcpl-python) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/mcpl-python.svg)](https://anaconda.org/conda-forge/mcpl-python) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/mcpl-python.svg)](https://anaconda.org/conda-forge/mcpl-python) |
 
@@ -98,16 +99,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `mcpl, mcpl-core, mcpl-lib, mcpl-python` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `mcpl, mcpl-core, mcpl-extra, mcpl-lib, mcpl-python` can be installed with `conda`:
 
 ```
-conda install mcpl mcpl-core mcpl-lib mcpl-python
+conda install mcpl mcpl-core mcpl-extra mcpl-lib mcpl-python
 ```
 
 or with `mamba`:
 
 ```
-mamba install mcpl mcpl-core mcpl-lib mcpl-python
+mamba install mcpl mcpl-core mcpl-extra mcpl-lib mcpl-python
 ```
 
 It is possible to list all of the versions of `mcpl` available on your platform with `conda`:
