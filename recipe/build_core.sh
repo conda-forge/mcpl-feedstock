@@ -12,7 +12,9 @@ cmake \
     -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release \
+    -DMCPL_ENABLE_ZLIB=USEPREINSTALLED \
     -DMCPL_NOTOUCH_CMAKE_BUILD_TYPE=ON
+
 
 cmake --build ./build_core --config Release --parallel ${CPU_COUNT:-2}
 cmake --install ./build_core

@@ -13,6 +13,7 @@ cmake ^
     %CMAKE_ARGS% ^
     -DCMAKE_INSTALL_PREFIX=%PREFIX% ^
     -DCMAKE_INSTALL_LIBDIR=lib ^
+    -DMCPL_ENABLE_ZLIB=USEPREINSTALLED ^
     -DMCPL_NOTOUCH_CMAKE_BUILD_TYPE=ON
 
 if %errorlevel% neq 0 exit /b %errorlevel%
