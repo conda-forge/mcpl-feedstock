@@ -1,14 +1,12 @@
-{% set version = "1.9.80" %}
+{% set version = "2.0.0" %}
 
 package:
   name: mcpl
   version: {{ version }}
 
 source:
-  #FIXME url: https://github.com/mctools/mcpl/archive/v{{ version }}.tar.gz
-  #FIXME sha256: 02ec79505ae57a8850ce11734e36f4fb451823e599c679d26d2f200500ca51b2
-  url: https://github.com/mctools/mcpl/archive/d63dcea3883ff1c58cc722364e850e41aaf903a9.tar.gz
-  sha256: 1e91648c05753510a3571633f133a3ed89881f095bfb0d971b30b12027eeebe3
+  url: https://github.com/mctools/mcpl/archive/v{{ version }}.tar.gz
+  sha256: c451d86abf17181edb8c36cf77b6dcbbe22f1d3c30df84321f8c17eda7c5a873
   #NB get sha256 with: curl -sL <URL> | openssl sha256
   folder: src
 
