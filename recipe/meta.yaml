@@ -1,4 +1,4 @@
-{% set version = "2.0.0" %}
+{% set version = "2.1.0" %}
 
 package:
   name: mcpl
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://github.com/mctools/mcpl/archive/v{{ version }}.tar.gz
-  sha256: c451d86abf17181edb8c36cf77b6dcbbe22f1d3c30df84321f8c17eda7c5a873
+  sha256: 40dab10577d0c45ca3bcc3448c3605c0684e32279d92b37941aff316434b9e3d
   #NB get sha256 with: curl -sL <URL> | openssl sha256
   folder: src
 
