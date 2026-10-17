@@ -1,5 +1,5 @@
-About mcpl-extra-feedstock
-==========================
+About mcpl-feedstock
+====================
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/mcpl-feedstock/blob/main/LICENSE.txt)
 
@@ -67,10 +67,10 @@ Current release info
 | [![Conda Recipe](https://img.shields.io/badge/recipe-mcpl--lib-green.svg)](https://anaconda.org/conda-forge/mcpl-lib) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/mcpl-lib.svg)](https://anaconda.org/conda-forge/mcpl-lib) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/mcpl-lib.svg)](https://anaconda.org/conda-forge/mcpl-lib) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/mcpl-lib.svg)](https://anaconda.org/conda-forge/mcpl-lib) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-mcpl--python-green.svg)](https://anaconda.org/conda-forge/mcpl-python) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/mcpl-python.svg)](https://anaconda.org/conda-forge/mcpl-python) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/mcpl-python.svg)](https://anaconda.org/conda-forge/mcpl-python) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/mcpl-python.svg)](https://anaconda.org/conda-forge/mcpl-python) |
 
-Installing mcpl-extra
-=====================
+Installing mcpl
+===============
 
-Installing `mcpl-extra` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
+Installing `mcpl` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
 
 ```
 conda config --add channels conda-forge
@@ -200,17 +200,17 @@ Terminology
                   produce the finished article (built conda distributions)
 
 
-Updating mcpl-extra-feedstock
-=============================
+Updating mcpl-feedstock
+=======================
 
-If you would like to improve the mcpl-extra recipe or build a new
+If you would like to improve the mcpl recipe or build a new
 package version, please fork this repository and submit a PR. Upon submission,
 your changes will be run on the appropriate platforms to give the reviewer an
 opportunity to confirm that the changes result in a successful build. Once
 merged, the recipe will be re-built and uploaded automatically to the
 `conda-forge` channel, whereupon the built conda packages will be available for
 everybody to install and use from the `conda-forge` channel.
-Note that all branches in the conda-forge/mcpl-extra-feedstock are
+Note that all branches in the conda-forge/mcpl-feedstock are
 immediately built and any created packages are uploaded, so PRs should be based
 on branches in forks, and branches in the main repository should only be used to
 build distinct package versions.
