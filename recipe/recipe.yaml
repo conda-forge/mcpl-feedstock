@@ -177,5 +177,7 @@ about:
   repository: https://github.com/mctools/mcpl
 
 extra:
+  # (conda-smithy otherwise names the feedstock after one of the outputs)
+  feedstock-name: mcpl
   recipe-maintainers:
     - tkittel
