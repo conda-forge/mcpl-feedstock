@@ -60,6 +60,11 @@ outputs:
         - setuptools >=75.3.2
       run:
         - python >=${{ python_min }}
+        # A version pin, not pin_subpackage(..., exact=True): this noarch
+        # package is one file for all platforms, while mcpl-lib has a
+        # different build (string) on each platform, so an exact pin would
+        # only be installable on one platform. The same goes for the
+        # dependencies of the noarch mcpl package below.
         - mcpl-lib =${{ version }}
     tests:
       - script:
@@ -147,9 +152,11 @@ outputs:
         - ${{ compiler('c') }}
         - ${{ stdlib('c') }}
       host:
-        - mcpl-lib =${{ version }}
+        - ${{ pin_subpackage('mcpl-lib', exact=True) }}
       run:
-        - mcpl-lib =${{ version }}
+        # (exact pins are possible here, since mcpl-extra and mcpl-lib are
+        # both built for each platform)
+        - ${{ pin_subpackage('mcpl-lib', exact=True) }}
     tests:
       - script:
           - ssw2mcpl --help
