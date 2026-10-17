@@ -54,6 +54,13 @@ outputs:
       noarch: python
       script: python -m pip install "./src/mcpl_core/empty_pypkg" -vv --no-deps --no-build-isolation
     requirements:
+      build:
+        # (when cross-compiling, e.g. osx-arm64 on osx-64, the python of the
+        # host environment can not run)
+        - if: build_platform != target_platform
+          then:
+            - python ${{ python_min }}.*
+            - cross-python_${{ target_platform }}
       host:
         - python ${{ python_min }}.*
         - pip
@@ -84,6 +91,13 @@ outputs:
         entry_points:
           - pymcpltool = mcpl.mcpl:main
     requirements:
+      build:
+        # (when cross-compiling, e.g. osx-arm64 on osx-64, the python of the
+        # host environment can not run)
+        - if: build_platform != target_platform
+          then:
+            - python ${{ python_min }}.*
+            - cross-python_${{ target_platform }}
       host:
         - python ${{ python_min }}.*
         - pip
@@ -110,6 +124,13 @@ outputs:
       noarch: python
       script: python -m pip install "./src/mcpl_metapkg" -vv --no-deps --no-build-isolation
     requirements:
+      build:
+        # (when cross-compiling, e.g. osx-arm64 on osx-64, the python of the
+        # host environment can not run)
+        - if: build_platform != target_platform
+          then:
+            - python ${{ python_min }}.*
+            - cross-python_${{ target_platform }}
       host:
         - python ${{ python_min }}.*
         - pip
