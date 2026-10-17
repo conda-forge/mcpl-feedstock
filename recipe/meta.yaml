@@ -33,7 +33,8 @@ outputs:
       requires:
         - cmake >=3.25
         - make  # [not win]
-        - c-compiler
+        - {{ compiler('c') }}
+        - {{ stdlib('c') }}
       source_files:
         - ./src/examples/downstream_cmake
         - ./src/examples/example.mcpl
@@ -114,7 +115,8 @@ outputs:
         - pip
         - cmake >=3.25
         - make  # [not win]
-        - c-compiler
+        - {{ compiler('c') }}
+        - {{ stdlib('c') }}
       imports:
         - mcpl
       commands:
