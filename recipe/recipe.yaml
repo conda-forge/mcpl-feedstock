@@ -1,0 +1,204 @@
+schema_version: 1
+
+context:
+  version: "2.2.8"
+
+recipe:
+  name: mcpl
+  version: ${{ version }}
+
+source:
+  url: https://github.com/mctools/mcpl/archive/v${{ version }}.tar.gz
+  sha256: 6f139822cde2fd7d14b6732c25e312bde77627aeb8ef3b03960acea85935d03b
+  #NB get sha256 with: curl -sL <URL> | openssl sha256
+  target_directory: src
+
+build:
+  number: 1
+
+outputs:
+  - package:
+      name: mcpl-lib
+    build:
+      script: build_core
+    requirements:
+      build:
+        - cmake >=3.25
+        - if: not win
+          then: make
+        - ${{ compiler('c') }}
+        - ${{ stdlib('c') }}
+        - zlib
+      host:
+        - zlib
+      run:
+        - zlib
+    tests:
+      - script:
+          file: test_core
+        requirements:
+          build:
+            - cmake >=3.25
+            - if: not win
+              then: make
+            - ${{ compiler('c') }}
+            - ${{ stdlib('c') }}
+        files:
+          source:
+            - src/examples/downstream_cmake/
+            - src/examples/example.mcpl
+
+  - package:
+      name: mcpl-core
+    build:
+      noarch: python
+      script: python -m pip install "./src/mcpl_core/empty_pypkg" -vv --no-deps --no-build-isolation
+    requirements:
+      build:
+        # (when cross-compiling, e.g. osx-arm64 on osx-64, the python of the
+        # host environment can not run)
+        - if: build_platform != target_platform
+          then:
+            - python ${{ python_min }}.*
+            - cross-python_${{ target_platform }}
+      host:
+        - python ${{ python_min }}.*
+        - pip
+        - setuptools >=75.3.2
+      run:
+        - python >=${{ python_min }}
+        # A version pin, not pin_subpackage(..., exact=True): this noarch
+        # package is one file for all platforms, while mcpl-lib has a
+        # different build (string) on each platform, so an exact pin would
+        # only be installable on one platform. The same goes for the
+        # dependencies of the noarch mcpl package below.
+        - mcpl-lib =${{ version }}
+    tests:
+      - script:
+          - pip check
+          - pip show mcpl-core
+        requirements:
+          run:
+            - python ${{ python_min }}.*
+            - pip
+
+  - package:
+      name: mcpl-python
+    build:
+      noarch: python
+      script: python -m pip install "./src/mcpl_python" -vv --no-deps --no-build-isolation
+      python:
+        entry_points:
+          - pymcpltool = mcpl.mcpl:main
+    requirements:
+      build:
+        # (when cross-compiling, e.g. osx-arm64 on osx-64, the python of the
+        # host environment can not run)
+        - if: build_platform != target_platform
+          then:
+            - python ${{ python_min }}.*
+            - cross-python_${{ target_platform }}
+      host:
+        - python ${{ python_min }}.*
+        - pip
+        - setuptools >=64.0
+      run:
+        - python >=${{ python_min }}
+        - numpy >=1.22
+    tests:
+      - python:
+          imports:
+            - mcpl
+          python_version: ${{ python_min }}.*
+      - script:
+          - pip show mcpl-python
+          - pymcpltool --help
+        requirements:
+          run:
+            - python ${{ python_min }}.*
+            - pip
+
+  - package:
+      name: mcpl
+    build:
+      noarch: python
+      script: python -m pip install "./src/mcpl_metapkg" -vv --no-deps --no-build-isolation
+    requirements:
+      build:
+        # (when cross-compiling, e.g. osx-arm64 on osx-64, the python of the
+        # host environment can not run)
+        - if: build_platform != target_platform
+          then:
+            - python ${{ python_min }}.*
+            - cross-python_${{ target_platform }}
+      host:
+        - python ${{ python_min }}.*
+        - pip
+        - setuptools >=75.3.2
+      run:
+        - python >=${{ python_min }}
+        - mcpl-core =${{ version }}
+        - mcpl-python =${{ version }}
+    tests:
+      - python:
+          imports:
+            - mcpl
+          python_version: ${{ python_min }}.*
+      - script:
+          - mcpl-config --help
+          - mcpl-config -s
+          - mcpltool --version
+          - mcpltool --help
+          - pymcpltool --help
+          - cmake --find-package -DNAME=MCPL -DCOMPILER_ID=GNU -DLANGUAGE=CXX -DMODE=EXIST
+        requirements:
+          build:
+            - cmake >=3.25
+            - if: not win
+              then: make
+            - ${{ compiler('c') }}
+            - ${{ stdlib('c') }}
+          run:
+            - python ${{ python_min }}.*
+
+  - package:
+      name: mcpl-extra
+    build:
+      script: build_extra
+    requirements:
+      build:
+        - cmake >=3.25
+        - if: not win
+          then: make
+        - ${{ compiler('c') }}
+        - ${{ stdlib('c') }}
+      host:
+        - ${{ pin_subpackage('mcpl-lib', exact=True) }}
+      run:
+        # (exact pins are possible here, since mcpl-extra and mcpl-lib are
+        # both built for each platform)
+        - ${{ pin_subpackage('mcpl-lib', exact=True) }}
+    tests:
+      - script:
+          - ssw2mcpl --help
+          - mcpl2ssw --help
+          - phits2mcpl --help
+          - mcpl2phits --help
+
+about:
+  homepage: https://github.com/mctools/mcpl
+  summary: MCPL - Monte Carlo Particle Lists
+  description: |
+    Utilities and API for accessing MCPL (.mcpl) files. MCPL is a binary
+    format with lists of particle state information, for interchanging and
+    reshooting events between various Monte Carlo simulation applications.
+  license: Apache-2.0
+  license_file: src/LICENSE
+  documentation: https://mctools.github.io/mcpl
+  repository: https://github.com/mctools/mcpl
+
+extra:
+  # (conda-smithy otherwise names the feedstock after one of the outputs)
+  feedstock-name: mcpl
+  recipe-maintainers:
+    - tkittel
